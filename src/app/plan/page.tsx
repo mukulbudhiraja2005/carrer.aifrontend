@@ -15,6 +15,8 @@ export default function PlanPage() {
   const [openCareer, setOpenCareer] = useState<string | null>(null);
   const [isMounted, setIsMounted] = useState(false);
   const [checkedTasks, setCheckedTasks] = useState<CheckedMap>({});
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 
   const router = useRouter();
 
@@ -70,7 +72,7 @@ export default function PlanPage() {
     try {
       const token = localStorage.getItem("token");
 
-const res = await fetch("http://localhost:5000/api/ai/chat", {
+const res = await fetch(`${API_URL}/api/ai/chat`, {
   method: "POST",
   headers: {
     "Content-Type": "application/json",

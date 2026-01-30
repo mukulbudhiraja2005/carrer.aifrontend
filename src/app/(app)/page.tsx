@@ -18,6 +18,8 @@ export default function HomePage() {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loadingReview, setLoadingReview] = useState(false);
   const [myUserId, setMyUserId] = useState<string | null>(null);
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 
   // ================= GET USER ID FROM TOKEN =================
   useEffect(() => {
@@ -33,7 +35,7 @@ export default function HomePage() {
   // ================= FETCH REVIEWS =================
   const fetchReviews = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/reviews");
+      const res = await fetch(`${API_URL}/api/reviews`);
       const data = await res.json();
       setReviews(data);
     } catch {
@@ -63,7 +65,7 @@ export default function HomePage() {
     try {
       setLoadingReview(true);
 
-      await fetch("http://localhost:5000/api/reviews", {
+      await fetch(`${API_URL}/api/reviews`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -93,7 +95,7 @@ export default function HomePage() {
 
     const token = localStorage.getItem("token");
 
-    await fetch(`http://localhost:5000/api/reviews/${id}`, {
+    await fetch(`${API_URL}/api/reviews/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,

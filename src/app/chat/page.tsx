@@ -26,6 +26,8 @@ export default function ChatPage() {
   const [input, setInput] = useState("");
   const [isListening, setIsListening] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 
   const recognitionRef = useRef<any>(null);
 
@@ -44,11 +46,12 @@ export default function ChatPage() {
       if (!token) return;
 
       try {
-        const res = await fetch("http://localhost:5000/api/ai/chat", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+       const res = await fetch(`${API_URL}/api/ai/chat`, {
+  headers: {
+    Authorization: `Bearer ${token}`,
+  },
+});
+
 
         const data = await res.json();
 
@@ -192,14 +195,15 @@ export default function ChatPage() {
     try {
       const token = localStorage.getItem("token");
 
-      const res = await fetch("http://localhost:5000/api/ai/chat", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ message: userText }),
-      });
+      const res = await fetch(`${API_URL}/api/ai/chat`, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  },
+  body: JSON.stringify({ message: userText }),
+});
+
 
       const data = await res.json();
 

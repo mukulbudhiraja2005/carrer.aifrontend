@@ -42,6 +42,8 @@ export default function ResumePage() {
   const [isPremium, setPremium] = useState(false);
   const [showPayment, setShowPayment] = useState(false);
   const [paying, setPaying] = useState(false);
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 
   const [form, setForm] = useState({
     name: "",
@@ -73,7 +75,7 @@ export default function ResumePage() {
       if (!token) return;
 
       try {
-        const res = await fetch("http://localhost:5000/api/payment/status", {
+        const res = await fetch(`${API_URL}/api/payment/status`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -94,7 +96,7 @@ export default function ResumePage() {
 
       const token = localStorage.getItem("token");
 
-      await fetch("http://localhost:5000/api/payment/fake-pay", {
+      await fetch(`${API_URL}/api/payment/fake-pay`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
