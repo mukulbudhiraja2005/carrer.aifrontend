@@ -1,13 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-// 🔥 THIS LINE FIXES THE BUILD ERROR
 export const dynamic = "force-dynamic";
 
-export default function LoginPage() {
+function LoginInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirect = searchParams.get("redirect") || "/";
@@ -34,14 +33,11 @@ export default function LoginPage() {
       });
 
       const data = await res.json();
-
       if (!res.ok) {
         throw new Error(data.message || "Login failed");
       }
 
-      // ✅ localStorage is SAFE here (client only)
       localStorage.setItem("token", data.token);
-
       router.push(redirect);
     } catch (err: any) {
       setError(err.message);
@@ -102,5 +98,13 @@ export default function LoginPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="text-white">Loading...</div>}>
+      <LoginInner />
+    </Suspense>
   );
 }
